@@ -36,7 +36,7 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max, g
     # min_temp_C = 25  # Set the lower bound temperature to 25°C
     # max_temp_C = 173  # Set the upper bound temperature to 173°C
 
-    # Linear fit to map global_min to min_temp_C and global_max to max_temp_C
+    # Linear interpolation to map global_min to min_temp_C and global_max to max_temp_C
     def scale_to_temp(raw_value):
         return ((raw_value - global_min) / (global_max - global_min)) * (max_temp_C - min_temp_C) + min_temp_C
 
