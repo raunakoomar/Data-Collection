@@ -33,7 +33,7 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max, g
 
     # Calibration: map raw FLIR units to °C using linear fit
     # Adjusting the temperature range from 25°C to 173°C (new min_temp_C = 25°C)
-    # min_temp_C = 25  # Set the lower bound temperature to 25°C
+    # min_temp_C = 25  # Set the lower bound temperature to 20-23°C
     # max_temp_C = 173  # Set the upper bound temperature to 173°C
 
     # Linear interpolation to map global_min to min_temp_C and global_max to max_temp_C
