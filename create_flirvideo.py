@@ -17,7 +17,7 @@ def apply_inverted_colormap(image_8bit):
     colored_image = inverted_colormap(image_8bit / 255.0)
     return (colored_image[:, :, :3] * 255).astype(np.uint8)
 
-def add_vertical_color_scale_bar(image, width, height, global_min, global_max):
+def add_vertical_color_scale_bar(image, width, height, global_min, global_max, gain_factor=0.04):
     # Compute bar dimensions and position
     bar_height    = int(0.5 * height)
     bar_thickness = 20
@@ -31,9 +31,18 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max):
     for i in range(bar_height):
         image[bar_y_start + i, bar_x_start:bar_x_start + bar_thickness] = gradient_colormap[i]
 
-    # Calibration: map raw FLIR units to °C: use linear fit
-    min_temp_C = 0.0231*global_min-273.15
-    max_temp_C = 0.032*global_max-273.15
+    # Calibration: map raw FLIR units to °C using linear fit
+    # Adjusting the temperature range from 25°C to 173°C (new min_temp_C = 25°C)
+    # min_temp_C = 25  # Set the lower bound temperature to 25°C
+    # max_temp_C = 173  # Set the upper bound temperature to 173°C
+
+    # Linear fit to map global_min to min_temp_C and global_max to max_temp_C
+    def scale_to_temp(raw_value):
+        return ((raw_value - global_min) / (global_max - global_min)) * (max_temp_C - min_temp_C) + min_temp_C
+
+    # Apply the linear fit to the global min and max
+    min_temp_C = scale_to_temp(global_min)
+    max_temp_C = scale_to_temp(global_max)
 
     # Text styling
     font       = cv2.FONT_HERSHEY_SIMPLEX
@@ -45,7 +54,7 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max):
     min_label_pos = (bar_x_start - 60, bar_y_start + bar_height + 5)
     max_label_pos = (bar_x_start - 60, bar_y_start + 5)
 
-    # Add labels
+    # Add labels for min and max temperature
     cv2.putText(image,
                 f'{min_temp_C:.2f} C',
                 min_label_pos,
@@ -64,6 +73,7 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max):
                 lineType=cv2.LINE_AA)
 
     return image
+
 
 def add_timestamp(image, timestamp, width, height):
     # Format timestamp
