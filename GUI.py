@@ -1,4 +1,3 @@
-import cython
 import os
 import numpy as np
 import cv2
@@ -6,8 +5,8 @@ from datetime import datetime
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
-from audioconversion import csv_to_wav
-from createflirvideo import (
+from audio_conversion import csv_to_wav
+from create_flirvideo import (
     convert_to_8bit,
     apply_inverted_colormap,
     add_vertical_color_scale_bar,
