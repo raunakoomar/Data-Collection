@@ -153,9 +153,9 @@ if __name__ == "__main__":
     create_gui()
 
 # TODO
-# Speed up data processing, especially with large datasets like FLIR frames or microphone data --> cython
-# Enhance the graphical user interface for better user interaction and flexibility
-# Cross-platform compatibility: Ensure the GUI works seamlessly on different operating systems (Windows, macOS, Linux)
-# Advanced data analysis: Provide advanced statistics or graphs on the temperature data, such as temperature distribution, heatmaps, or time-series analysis
-# Implement threading and curvature to improve performance and responsiveness
-# Add error handling and logging mechanisms to track issues during processing
+# Speed up data processing, especially with large datasets like FLIR frames, using Cython
+# Add XML parsing script for robot data
+# Implement threading and curvature to improve performance and responsiveness through parallel data processing
+# Scale LEM Box Voltage and Current data by 10 and 100 respectively
+# Process XIRIS Camera
+# Add feature to trim "junk data" to accomodate for other sensor data
