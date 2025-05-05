@@ -145,3 +145,9 @@ def npy_to_video(input_folder, output_file, output_frames_folder,
 #         r"C:\…\data_collection_20250402_130444\FLIR_Frames",
 #         fps=10, width=640, height=480
 #     )
+
+# TODO
+# Optimize the image processing pipeline for large datasets --> multi-threading
+# Better handle extreme temperature values to avoid data clipping or loss of detail in the image --> dynamic range adjustment
+# Extend support for other thermal image formats (e.g., TIFF, DNG) for greater flexibility
+# Allow users to specify video codecs, resolution, and frame rate when calling npy_to_video
