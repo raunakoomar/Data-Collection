@@ -3,7 +3,7 @@ A data collection processor that converts thermal FLIR data and microphone CSV d
 
 ## Process
   1) Create a requirements.txt, listing necessary Python dependencies are installed for the system to run FLIR video processing, audio conversion, and GUI functionality
-    - Run pip install requirements.txt in terminal to congifure the correct library versions
+  - Run pip install requirements.txt in terminal to congifure the correct library versions
   2) Run GUI.py code
   3) Click the "Select Main Folder" button and import the necessary data collection folders
   4) Once selecting the necessary folders, click the "Process All Subfolders" button
