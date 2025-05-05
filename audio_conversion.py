@@ -82,3 +82,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# TODO
+# Enhance error handling when dealing with file reading, writing, or incorrect file formats
+# Allow batch processing of multiple CSV files at once instead of just one predefined file
+# Improve audio normalization to handle extreme values more effectively
+# Provide feedback to the user during the conversion process, especially for large CSV files
+# Allow users to specify a custom sampling rate for the WAV file
