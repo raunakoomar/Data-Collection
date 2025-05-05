@@ -7,8 +7,9 @@ A data collection processor that converts FLIR and csv data to proper frames and
   3) Once selecting the necessary folders, click the "Process All Subfolders" button
   4) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings
 
-## Code Descriptions
-### GUI.py
+### Code Descriptions
+
+## GUI.py
 Purpose: Provides a graphical user interface (GUI) for processing FLIR and microphone data
 Key Functions:
   1) Allows the user to select a main folder containing subfolders with FLIR and microphone data
