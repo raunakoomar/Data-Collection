@@ -137,15 +137,19 @@ def create_gui():
             messagebox.showwarning("No Folder Selected", "Please select a main folder first.")
             return
         
-        subfolders = [os.path.join(main_folder, d) for d in os.listdir(main_folder)
-                      if os.path.isdir(os.path.join(main_folder, d))]
-        if not subfolders:
-            log("No subfolders found in the main folder.")
-            return
-        
-        for folder in subfolders:
-            process_folder(folder, log)
-            log(f"=== Finished processing folder: {folder} ===\n")
+        if (os.path.exists(os.path.join(main_folder, "microphone_data.csv")) or 
+            (os.path.exists(os.path.join(main_folder, "FLIR")) and os.path.isdir(os.path.join(main_folder, "FLIR")))):
+            process_folder(main_folder, log)
+            log(f"=== Finished processing folder: {main_folder} ===\n")
+        else:
+            subfolders = [os.path.join(main_folder, d) for d in os.listdir(main_folder)
+                          if os.path.isdir(os.path.join(main_folder, d))]
+            if not subfolders:
+                log("No subfolders found in the main folder.")
+                return
+            for folder in subfolders:
+                process_folder(folder, log)
+                log(f"=== Finished processing folder: {folder} ===\n")
 
     root.mainloop()
 
@@ -157,5 +161,5 @@ if __name__ == "__main__":
 # Add XML parsing script for robot data
 # Implement threading and curvature to improve performance and responsiveness through parallel data processing
 # Scale LEM Box Voltage and Current data by 10 and 100 respectively
-# Process XIRIS Camera
+# Process XIRIS Camera data
 # Add feature to trim "junk data" to accomodate for other sensor data
