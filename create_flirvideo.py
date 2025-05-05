@@ -1,21 +1,19 @@
 import numpy as np
 import cv2
 import os
-import math
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 def convert_to_8bit(image, global_min, global_max):
     image_normalized = (image - global_min) / (global_max - global_min)
     image_normalized = np.clip(image_normalized, 0, 1)
-    image_8bit = (image_normalized * 255).astype(np.uint8)
-    return image_8bit
+    return (image_normalized * 255).astype(np.uint8)
 
 def apply_inverted_colormap(image_8bit):
     colormap = plt.get_cmap('jet')
-    inverted_colormap = colormap.reversed()
-    colored_image = inverted_colormap(image_8bit / 255.0)
-    return (colored_image[:, :, :3] * 255).astype(np.uint8)
+    inverted = colormap.reversed()
+    colored = inverted(image_8bit / 255.0)
+    return (colored[:, :, :3] * 255).astype(np.uint8)
 
 def add_vertical_color_scale_bar(image, width, height, global_min, global_max, gain_factor=0.04):
     # Compute bar dimensions and position
@@ -33,10 +31,10 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max, g
 
     # Calibration: map raw FLIR units to °C using linear fit
     # Adjusting the temperature range from 25°C to 173°C (new min_temp_C = 25°C)
-    # min_temp_C = 25  # Set the lower bound temperature to 20-23°C
-    # max_temp_C = 173  # Set the upper bound temperature to 173°C
+    min_temp_C = 25  # Set the lower bound temperature to 25°C
+    max_temp_C = 173  # Set the upper bound temperature to 173°C
 
-    # Linear interpolation to map global_min to min_temp_C and global_max to max_temp_C
+    # Linear fit to map global_min to min_temp_C and global_max to max_temp_C
     def scale_to_temp(raw_value):
         return ((raw_value - global_min) / (global_max - global_min)) * (max_temp_C - min_temp_C) + min_temp_C
 
@@ -74,107 +72,76 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max, g
 
     return image
 
-
 def add_timestamp(image, timestamp, width, height):
-    # Format timestamp
-    formatted_time = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f') \
-                             .strftime('%H:%M:%S.%f')[:-3]  # trim to milliseconds
-    text_to_display = f"FP25021801 {formatted_time}"
-
-    # Text styling
+    formatted = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f') \
+                      .strftime('%H:%M:%S.%f')[:-3]
+    text = f"FP25021801 {formatted}"
     font       = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 0.6
     color      = (255, 255, 255)
     thickness  = 2
-
-    # Calculate position
-    text_size = cv2.getTextSize(text_to_display, font, font_scale, thickness)[0]
-    location  = (width - text_size[0] - 10, height - 10)
-
-    # Overlay text
-    image_with_timestamp = cv2.putText(
-        image, text_to_display, location, font, font_scale, color, thickness, lineType=cv2.LINE_AA
-    )
-    return image_with_timestamp
+    size = cv2.getTextSize(text, font, font_scale, thickness)[0]
+    loc  = (width - size[0] - 10, height - 10)
+    return cv2.putText(image, text, loc, font, font_scale, color, thickness, lineType=cv2.LINE_AA)
 
 def find_global_min_max(input_folder):
-    npy_files = sorted([f for f in os.listdir(input_folder) if f.endswith('.npy')])
-    global_min = float('inf')
-    global_max = float('-inf')
-
-    for npy_file in npy_files:
-        path = os.path.join(input_folder, npy_file)
+    npy_files = sorted(f for f in os.listdir(input_folder) if f.endswith('.npy'))
+    gmin, gmax = float('inf'), float('-inf')
+    for fname in npy_files:
         try:
-            data = np.load(path, allow_pickle=True).item()
+            data  = np.load(os.path.join(input_folder, fname), allow_pickle=True).item()
             frame = data['frame']
-            global_min = min(global_min, frame.min())
-            global_max = max(global_max, frame.max())
-        except Exception as e:
-            print(f"Skipping {npy_file}: {e}")
-
-    return global_min, global_max
+            gmin  = min(gmin, frame.min())
+            gmax  = max(gmax, frame.max())
+        except:
+            pass
+    return gmin, gmax
 
 def npy_to_video(input_folder, output_file, output_frames_folder,
                  fps=10, width=640, height=480):
-    # Compute global min/max for contrast stretching
-    global_min, global_max = find_global_min_max(input_folder)
+    gmin, gmax = find_global_min_max(input_folder)
 
-    # Gather and sort .npy files by timestamp
-    npy_with_ts = []
+    # Load & sort by timestamp
+    records = []
     for fname in os.listdir(input_folder):
         if not fname.endswith('.npy'):
             continue
         path = os.path.join(input_folder, fname)
         try:
-            data      = np.load(path, allow_pickle=True).item()
-            timestamp = data.get('timestamp')
-            if timestamp:
-                npy_with_ts.append((fname, timestamp))
-        except Exception as e:
-            print(f"Skipping {fname}: {e}")
+            obj = np.load(path, allow_pickle=True).item()
+            ts  = obj.get('timestamp')
+            if ts:
+                records.append((fname, obj['frame'], ts))
+        except:
+            pass
 
-    npy_with_ts.sort(key=lambda x: datetime.strptime(x[1], '%Y-%m-%d %H:%M:%S.%f'))
+    records.sort(key=lambda x: datetime.strptime(x[2], '%Y-%m-%d %H:%M:%S.%f'))
 
-    # Initialize video writer
+    # Prepare writer & frames dir
+    os.makedirs(output_frames_folder, exist_ok=True)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out    = cv2.VideoWriter(output_file, fourcc, fps, (width, height))
-    os.makedirs(output_frames_folder, exist_ok=True)
 
-    # Process frames
-    for i, (fname, ts) in enumerate(npy_with_ts):
-        path = os.path.join(input_folder, fname)
-        try:
-            data  = np.load(path, allow_pickle=True).item()
-            frame = data['frame']
+    for i, (fname, frame, ts) in enumerate(records, start=1):
+        img  = convert_to_8bit(frame, gmin, gmax)
+        img  = apply_inverted_colormap(img)
+        img  = cv2.resize(img, (width, height))
+        img  = add_vertical_color_scale_bar(img, width, height, gmin, gmax)
+        img  = add_timestamp(img, ts, width, height)
 
-            # Convert, colorize, resize
-            img8  = convert_to_8bit(frame, global_min, global_max)
-            clr   = apply_inverted_colormap(img8)
-            resized = cv2.resize(clr, (width, height))
-
-            # Add scale bar & timestamp
-            with_bar = add_vertical_color_scale_bar(
-                resized, width, height, global_min, global_max
-            )
-            final = add_timestamp(with_bar, ts, width, height)
-
-            # Write to video and save frame
-            out.write(final)
-            frame_fname = os.path.join(
-                output_frames_folder,
-                f"{os.path.splitext(fname)[0]}.png"
-            )
-            cv2.imwrite(frame_fname, final)
-            print(f"[{i+1}/{len(npy_with_ts)}] Processed {fname}")
-
-        except Exception as e:
-            print(f"Error processing {fname}: {e}")
+        out.write(img)
+        png_path = os.path.join(output_frames_folder, f"{os.path.splitext(fname)[0]}.png")
+        cv2.imwrite(png_path, img)
+        print(f"[{i}/{len(records)}] Saved frame: {png_path}")
 
     out.release()
-    print(f"Saved video to {output_file}")
+    print(f"Video saved to {output_file}")
 
-# ── Example usage: ──────────────────────────────────────────────────────────────
-# input_folder        = r"C:\Users\rauna\Documents\data_collection_20250402_130444\FLIR"
-# output_file         = r"C:\Users\rauna\Documents\data_collection_20250402_130444\FLIR.mp4"
-# output_frames_folder= r"C:\Users\rauna\Documents\data_collection_20250402_130444\FLIR Frames"
-# npy_to_video(input_folder, output_file, output_frames_folder, fps=10, width=640, height=480)
+# Example usage (uncomment & adjust paths):
+# if __name__ == "__main__":
+#     npy_to_video(
+#         r"C:\…\data_collection_20250402_130444\FLIR",
+#         r"C:\…\data_collection_20250402_130444\FLIR.mp4",
+#         r"C:\…\data_collection_20250402_130444\FLIR_Frames",
+#         fps=10, width=640, height=480
+#     )
