@@ -1,5 +1,5 @@
 # Data-Collection
-A data collection processor that converts FLIR and csv data to proper frames and audio files.
+A data collection processor that converts FLIR and csv data to proper frames and audio files. This project is designed to process and visualize data from FLIR thermal cameras and microphone sensors, converting raw FLIR thermal data stored in .npy files into temperature-calibrated video files with overlaid color scale bars and timestamps. It also includes functionality for converting microphone CSV data into WAV audio files, all within a GUI that allows users to manage data folders, execute conversions, and view logs in real-time.
 
 ## Process
   1) Run GUI.py code
@@ -7,7 +7,7 @@ A data collection processor that converts FLIR and csv data to proper frames and
   3) Once selecting the necessary folders, click the "Process All Subfolders" button
   4) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings
 
-### Code Descriptions
+# Code Descriptions
 
 ## GUI.py
 Purpose: Provides a graphical user interface (GUI) for processing FLIR and microphone data
