@@ -6,6 +6,7 @@ A data collection processor that converts FLIR and csv data to proper frames and
   2) Click the "Select Main Folder" button and import the necessary data collection folders
   3) Once selecting the necessary folders, click the "Process All Subfolders" button
   4) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings
+  5) The FLIR Frames will also be converted to a .mp4 video file, so the numerous frames can be seen progressively
 
 # Code Descriptions
 
