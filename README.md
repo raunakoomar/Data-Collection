@@ -36,3 +36,11 @@ A data collection processor that converts FLIR and csv data to proper frames and
 ## requirements.txt
 - Purpose: The requirements.txt file lists the necessary Python libraries for the project, ensuring that all dependencies are installed for the system to run the FLIR video processing, audio conversion, and GUI functionality
 - Functions: It includes libraries for numerical computations, image processing, visualization, data manipulation, and performance optimization, enabling the conversion of FLIR thermal data and microphone CSV data into video and audio formats
+
+# Future To-Do List
+  1) Speed up data processing, especially with large datasets like FLIR frames
+  2) Enhance the graphical user interface for better user interaction and flexibility
+  3) Cross-platform compatibility: Ensure the GUI works seamlessly on different operating systems (Windows, macOS, Linux)
+  4) Advanced data analysis: Provide advanced statistics or graphs on the temperature data, such as temperature distribution, heatmaps, or time-series analysis
+  5) Implement threading and curvature to improve performance and responsiveness --> .xml files
+  6) Add error handling and logging mechanisms to track issues during processing
