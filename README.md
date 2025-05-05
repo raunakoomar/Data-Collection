@@ -1,4 +1,4 @@
-# Data-Collection
+# Data Collection Processor
 A data collection processor that converts FLIR and csv data to proper frames and audio files. This project is designed to process and visualize data from FLIR thermal cameras and microphone sensors, converting raw FLIR thermal data stored in .npy files into temperature-calibrated video files with overlaid color scale bars and timestamps. It also includes functionality for converting microphone CSV data into WAV audio files, all within a GUI that allows users to manage data folders, execute conversions, and view logs in real-time.
 
 ## Process
