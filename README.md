@@ -26,13 +26,13 @@ A data collection processor that converts FLIR and csv data to proper frames and
   3) Adds a vertical color scale bar and timestamp to each frame
   4) Generates a video by processing and sorting .npy files by timestamp
 
-## requirements.txt
-- Purpose: The requirements.txt file lists the necessary Python libraries for the project, ensuring that all dependencies are installed for the system to run the FLIR video processing, audio conversion, and GUI functionality.
-- Functions: It includes libraries for numerical computations, image processing, visualization, data manipulation, and performance optimization, enabling the conversion of FLIR thermal data and microphone CSV data into video and audio formats.
-
 ## audio_conversion.py
 - Purpose: Converts CSV files containing audio data into WAV files
 - Key Functions:
   1) Reads CSV files containing 'Amplitude' column
   2) Normalizes the audio signal, scaling it so that the max amplitude is 0.9
   3) Converts the data to 16-bit integers and writes it to a WAV file using the wave module
+ 
+## requirements.txt
+- Purpose: The requirements.txt file lists the necessary Python libraries for the project, ensuring that all dependencies are installed for the system to run the FLIR video processing, audio conversion, and GUI functionality
+- Functions: It includes libraries for numerical computations, image processing, visualization, data manipulation, and performance optimization, enabling the conversion of FLIR thermal data and microphone CSV data into video and audio formats
