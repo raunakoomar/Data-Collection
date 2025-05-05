@@ -151,3 +151,11 @@ def create_gui():
 
 if __name__ == "__main__":
     create_gui()
+
+# TODO
+# Speed up data processing, especially with large datasets like FLIR frames or microphone data --> cython
+# Enhance the graphical user interface for better user interaction and flexibility
+# Cross-platform compatibility: Ensure the GUI works seamlessly on different operating systems (Windows, macOS, Linux)
+# Advanced data analysis: Provide advanced statistics or graphs on the temperature data, such as temperature distribution, heatmaps, or time-series analysis
+# Implement threading and curvature to improve performance and responsiveness
+# Add error handling and logging mechanisms to track issues during processing
