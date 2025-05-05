@@ -36,7 +36,7 @@ A data collection processor that converts thermal FLIR data and microphone CSV d
   3) Converts the data to 16-bit integers and writes it to a WAV file using the wave module
 
 # To-Do List
-  1) Speed up data processing, especially with large datasets like FLIR frames using cython
+  1) Speed up data processing, especially with large datasets like FLIR frames, using Cython
   2) Add XML parsing script for robot data
   3) Implement threading and curvature to improve performance and responsiveness through parallel data processing
   4) Scale LEM Box Voltage and Current data by 10 and 100 respectively
