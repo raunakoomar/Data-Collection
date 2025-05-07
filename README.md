@@ -9,7 +9,7 @@ A data collection processor that converts thermal FLIR data and microphone CSV d
   - a.) For 1 data folder
       - Select data collection folder with the raw FLIR .npy and microphone .csv data and click "Select Folder"
   - b.) For multiple data folders
-      -  Create a main folder and import the necessary raw data collection folders into that, which would act as the subfolders. Select data collection folder with the raw            .npy and .csv data and click "Select Folder." The file path would look like "Main Folder" -> Data Collection Folders -> Raw FLIR .npy and microphone .csv data
+      -  Create a main folder and import the necessary raw data collection folders into that, which would act as the subfolders. Select the main data folder containing all            the raw data collection folders and click "Select Folder." The file path would look like "Main Folder" -> Data Collection Folders -> Raw FLIR .npy and microphone             .csv data
   4) Once selecting the necessary folders, click the "Process All Subfolders" button
   5) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings. The FLIR Frames will 
      also be converted to a .MP4 video file, so the numerous frames can be seen progressively
