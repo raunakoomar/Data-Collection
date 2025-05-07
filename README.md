@@ -1,14 +1,18 @@
 # Data Collection Processor
-A data collection processor that converts thermal FLIR data and microphone CSV data to colored FLIR frames and audio files. This project is designed to process and visualize data from FLIR thermal cameras and microphone sensors, converting raw FLIR thermal data stored in .npy files into temperature-calibrated video files with overlaid color scale bars and timestamps. It also includes functionality for converting microphone CSV data into WAV audio files, all within a GUI that allows users to manage data folders, execute conversions, and view logs in real-time.
+A data collection processor that converts thermal FLIR data and microphone CSV data to colored FLIR frames and audio files respectively. This project is designed to process and visualize data from FLIR thermal cameras and microphone sensors, converting raw FLIR thermal data stored in .npy files into temperature-calibrated video files with overlaid color scale bars and timestamps. It also includes functionality for converting microphone CSV data into WAV audio files, all within a GUI that allows users to select data folders, execute conversions, and view logs in real-time.
 
 ## Process
-  1) Create a requirements.txt, listing necessary Python dependencies are installed for the system to run FLIR video processing, audio conversion, and GUI functionality
+  1) Download the requirements.txt, listing necessary Python dependencies are installed for the system to run FLIR video processing, audio conversion, and GUI functionalities
   - Run pip install requirements.txt in terminal to congifure the correct library versions
   2) Run GUI.py code
   3) Click the "Select Main Folder" button and import the necessary data collection folders
+    a.) For 1 data folder
+      - Select data collection folder with the raw FLIR .npy and microphone .csv data and click "Select Folder"
+    b.) For multiple data folders
+      -  Create a main folder and import the necessary raw data collection folders into that, which would act as the subfolders. Select data collection folder with the raw            .npy and .csv data and click "Select Folder." The file path would look like "Main Folder" -> Data Collection Folders -> Raw FLIR .npy and microphone .csv data
   4) Once selecting the necessary folders, click the "Process All Subfolders" button
-  5) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings
-  6) The FLIR Frames will also be converted to a .MP4 video file, so the numerous frames can be seen progressively
+  5) The GUI will run a conditional processor that would look for any .npy and/or microphone csv data, converting it to FLIR Frames and .wav recordings. The FLIR Frames will 
+     also be converted to a .MP4 video file, so the numerous frames can be seen progressively
 
 # Code Descriptions
 
@@ -16,7 +20,7 @@ A data collection processor that converts thermal FLIR data and microphone CSV d
 - Purpose: Provides a graphical user interface (GUI) for processing FLIR and microphone data
 - Key Functions:
   1) Allows the user to select a main folder containing subfolders with FLIR and microphone data
-  2) Calls the npy_to_video function to process FLIR .npy files into a video
+  2) Calls functions to process FLIR .npy files into a video
   3) Converts microphone CSV data to WAV format
   4) Displays logs in a scrollable text area within the GUI
 
@@ -36,9 +40,9 @@ A data collection processor that converts thermal FLIR data and microphone CSV d
   3) Converts the data to 16-bit integers and writes it to a WAV file using the wave module
 
 # To-Do List
-  1) Speed up data processing, especially with large datasets like FLIR frames, using Cython
+  1) Use Cython to speed up data processing, especially with large datasets like FLIR frames
   2) Add XML parsing script for robot data
-  3) Implement threading and curvature to improve performance and responsiveness through parallel data processing
-  4) Scale LEM Box Voltage and Current data by 10 and 100 respectively
-  5) Process XIRIS Camera
-  6) Add feature to trim "junk data" to accomodate for other sensor data
+  3) Implement threading to improve performance and responsiveness through parallel data processing
+  4) Scale LEM Box Voltage and Current data columns by 10 and 100 respectively
+  5) Process XIRIS Camera data
+  6) Add feature to trim "junk data"
