@@ -157,9 +157,9 @@ if __name__ == "__main__":
     create_gui()
 
 # TODO
-# Speed up data processing, especially with large datasets like FLIR frames, using Cython
+# Use Cython to speed up data processing, especially with large datasets like FLIR frames
 # Add XML parsing script for robot data
-# Implement threading and curvature to improve performance and responsiveness through parallel data processing
-# Scale LEM Box Voltage and Current data by 10 and 100 respectively
+# Implement threading to improve performance and responsiveness through parallel data processing
+# Scale LEM Box Voltage and Current data columns by 10 and 100 respectively
 # Process XIRIS Camera data
-# Add feature to trim "junk data" to accomodate for other sensor data
+# Add feature to trim "junk data"
