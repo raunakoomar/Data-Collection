@@ -75,7 +75,7 @@ def add_vertical_color_scale_bar(image, width, height, global_min, global_max, g
 def add_timestamp(image, timestamp, width, height):
     formatted = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f') \
                       .strftime('%H:%M:%S.%f')[:-3]
-    text = f"FP25021801 {formatted}"
+    text = f"{formatted}"
     font       = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 0.6
     color      = (255, 255, 255)
